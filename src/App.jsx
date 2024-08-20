@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import "./App.css";
 import "./index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 import { Square } from "./components/Square.jsx";
 import { TURNS } from "./constants.js";
@@ -33,6 +33,17 @@ function App() {
     window.localStorage.removeItem("turn");
   };
 
+  useEffect(() => {
+    // define newTurn and newBoard variables
+    const newTurn = turn;
+    const newBoard = board;
+  
+    //guardar turno
+    window.localStorage.setItem("turn", JSON.stringify(newTurn));
+    //guardar partida
+    window.localStorage.setItem("tateti", JSON.stringify(newBoard));
+  }, [turn, board]);
+
   const updateBoard = (index) => {
     //no actualizamos la celda si ya tiene un valor
     if (board[index] || winner) {
@@ -56,10 +67,6 @@ function App() {
       //cambiamos el turno
       const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
       setTurn(newTurn);
-      //guardar turno
-      window.localStorage.setItem("turn", JSON.stringify(newTurn));
-      //guardar partida
-      window.localStorage.setItem("tateti", JSON.stringify(newBoard));
     }
   };
 
